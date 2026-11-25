@@ -418,12 +418,12 @@ tr.tot td{color:var(--sage);border-bottom:0}
   const bottom=(yes,x)=>'<div class="bottom"><button class="b-x"'+(x!=null?' data-go="'+x+'"':' disabled')+'>✕</button><button class="b-inv" disabled>INVITE</button><button class="b-yes" data-go="'+yes+'">YES</button></div>';
   const bottomOne=(label,go)=>'<div class="bottom one"><button class="b-yes" data-go="'+go+'">'+label+'</button></div>';
 
-  const sun={title:'brunch &amp; video<br>game lounge',meta:'this sunday · 12:00pm · chinatown',day:'sun, nov 8',t1:'12:00pm',s1:'brunch',t2:'2:00pm',s2:'video game lounge',s2sub:'$15 for four hours of play, paid at the door',grp:'brunch table',crowd:'32+',survey:'10:00pm'};
-  const nxt={title:'grand central urban-immersive scavenger hunt &amp; drinks',meta:'sat, nov 14 · 1:45pm · midtown',day:'sat, nov 14',t1:'1:45pm',s1:'scavenger hunt',t2:'4:00pm',s2:'drinks',s2sub:'at a nearby cocktail bar',grp:'scavenger hunt group',crowd:'40+',survey:'11:45pm'};
+  const sun={title:'brunch &amp; video<br>game lounge',meta:'this sunday · 12:00pm · chinatown',day:'sun, dec 6',t1:'12:00pm',s1:'brunch',t2:'2:00pm',s2:'video game lounge',s2sub:'$15 for four hours of play, paid at the door',grp:'brunch table',crowd:'32+',survey:'10:00pm'};
+  const nxt={title:'grand central urban-immersive scavenger hunt &amp; drinks',meta:'sat, dec 12 · 1:45pm · midtown',day:'sat, dec 12',t1:'1:45pm',s1:'scavenger hunt',t2:'4:00pm',s2:'drinks',s2sub:'at a nearby cocktail bar',grp:'scavenger hunt group',crowd:'40+',survey:'11:45pm'};
   const sheet='<div class="sheetwrap"><div class="sheet"><span class="grab"></span><div class="sbox"><h4>selection terms</h4><div class="sin"><span>proceeding will <b>add you to the selection pool</b> for this experience.</span><span>you\'ll be notified if you\'re selected from the pool by <b>1:22pm this saturday</b>.</span></div></div><div class="sbox"><h4>cancellation policy</h4><div class="sin"><span><b>cancel anytime before 1:22pm this saturday</b><br>no additional charges or fees</span><span><b>cancel after 1:22pm this saturday</b><br>automatic $12.22 cancellation charge</span></div></div></div></div>'+bottomOne('AGREE AND CONFIRM',2);
   const waiting=status+'<div class="msgcenter">you are now confirmed on the waitlist. you\'ll find out if you\'re selected by 1:22pm this saturday.</div>';
   const nsel='<div class="nsel"><b>not selected</b><span>we couldn\'t find compatible members for you at this experience. if you paid, you\'ll be refunded automatically.</span></div>';
-  const card=o=>'<button class="icard" data-go="5"><span class="room">spot guaranteed for you</span><b>'+o.title+'</b><span class="m">'+o.meta+'</span><span class="cur">'+svg.person+' curated by <b>you</b> ›</span><span class="f">'+svg.clock+' say yes by wed, nov 11</span></button>';
+  const card=o=>'<button class="icard" data-go="5"><span class="room">spot guaranteed for you</span><b>'+o.title+'</b><span class="m">'+o.meta+'</span><span class="cur">'+svg.person+' curated by <b>you</b> ›</span><span class="f">'+svg.clock+' say yes by wed, dec 9</span></button>';
   let mode='today',idx=0;
 
   const screens={
@@ -437,10 +437,10 @@ tr.tot td{color:var(--sage);border-bottom:0}
       ()=>status+top()+'<div class="app">'+head(sun)+itinerary(sun,'pending')+'</div>'+bottom(1),
       ()=>status+top()+'<div class="app">'+head(sun)+itinerary(sun,'pending')+'</div>'+sheet,
       ()=>waiting,
-      ()=>status+top()+'<div class="app">'+head(sun)+nsel.replace('</span></div>','</span><button class="first" data-go="4" style="margin-top:14px"><b>a spot is guaranteed for you at the scavenger hunt on nov 14<br><span style="font-size:12px;color:var(--sage)">say yes by wed, nov 11</span></b><span>›</span></button></div>')+'</div>',
+      ()=>status+top()+'<div class="app">'+head(sun)+nsel.replace('</span></div>','</span><button class="first" data-go="4" style="margin-top:14px"><b>a spot is guaranteed for you at the scavenger hunt on dec 12<br><span style="font-size:12px;color:var(--sage)">say yes by wed, dec 9</span></b><span>›</span></button></div>')+'</div>',
       ()=>status+'<div class="ihead"><span>INVITES<small>3</small></span></div><div class="app" style="justify-content:center;padding-bottom:40px">'+card(nxt)+'</div>',
       ()=>status+top()+'<div class="app">'+head(nxt)+itinerary(nxt,'<span style="color:var(--good)">guaranteed</span>')+'</div>'+bottom(6,4),
-      ()=>status+'<div class="msgcenter">you\'re in. your spot at the scavenger hunt on saturday, november 14 is confirmed. the usual cancellation policy applies.</div>'
+      ()=>status+'<div class="msgcenter">you\'re in. your spot at the scavenger hunt on saturday, december 12 is confirmed. the usual cancellation policy applies.</div>'
     ]
   };
 
@@ -455,7 +455,7 @@ tr.tot td{color:var(--sage);border-bottom:0}
       {when:'mon',what:'You tap yes, same as today.',sub:'Nothing changes before the decision.'},
       {when:'mon',what:'Same selection terms.',sub:'Same pool, same timing, same cancellation rules.'},
       {when:'mon to sat',what:'You\'re on the waitlist.',sub:'Same as today.'},
-      {when:'sat 1:22pm',what:'Not selected, plus a guaranteed spot somewhere else.',sub:'"A spot is guaranteed for you at the scavenger hunt on nov 14. Say yes by wed."',tag:1},
+      {when:'sat 1:22pm',what:'Not selected, plus a guaranteed spot somewhere else.',sub:'"A spot is guaranteed for you at the scavenger hunt on dec 12. Say yes by wed."',tag:1},
       {when:'sat',what:'That invite says "spot guaranteed for you."',sub:'Same invites screen, with the deadline to say yes.',tag:1},
       {when:'sat',what:'You open it and tap yes.',sub:'Same invite screen. Your row says guaranteed instead of pending.',tag:1},
       {when:'sat',what:'You\'re in. No waitlist this time.',sub:'That pool is short of people like you, so the matcher places you and builds the tables around you.'}
