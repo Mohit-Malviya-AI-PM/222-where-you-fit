@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Concept prototype by Mohit Malviya for 222: when a member is not selected, guarantee them a spot at an event that is short of people like them.">
+<title>Where You Fit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#131914;
+  --surface:#1a221c;
+  --raised:#2f3830;
+  --line:#3a433b;
+  --fg:#ffffdf;
+  --sage:#a5aa93;
+  --moss:#6b7362;
+  --good:#b8cf8f;
+  --warn:#e6c47e;
+  --bad:#e39a80;
+  --gold:#d6c46a;
+  --app-top:#27372c;
+  --app-bot:#1b251e;
+  --card:rgba(255,255,223,.045);
+  --card-line:rgba(255,255,223,.08);
+  --serif:"Crimson Pro","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--serif);font-size:18px;line-height:1.5;margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:var(--fg);text-underline-offset:3px}
+.wrap{max-width:920px;margin:0 auto;padding-inline:20px;padding-block:20px 64px}
+.concept{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--sage);display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px}
+.concept b{color:var(--fg);font-weight:500}
+header.hero{display:grid;gap:12px;padding-block:36px 20px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--sage)}
+h1{font-size:clamp(44px,7vw,80px);line-height:.95;font-weight:400;margin:0;letter-spacing:-.01em}
+h1 em{color:var(--sage)}
+.lede{color:var(--sage);font-size:20px;margin:0}
+.lede strong{color:var(--fg);font-weight:500}
+nav.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-block:8px 32px}
+.pill{font-family:var(--serif);font-size:17px;border-radius:9999px;border:1px solid transparent;background:var(--raised);color:var(--fg);padding:7px 16px;cursor:pointer;line-height:1.2;display:inline-flex;gap:8px;align-items:baseline}
+.pill .n{font-family:var(--mono);font-size:11px;color:var(--sage)}
+.pill:hover{border-color:var(--moss)}
+.pill[aria-selected="true"]{background:var(--fg);color:var(--bg)}
+.pill[aria-selected="true"] .n{color:var(--moss)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.muted{color:var(--sage)}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+.next{margin-top:28px;display:flex;justify-content:flex-end}
+.next button{font-family:var(--serif);font-style:italic;font-size:17px;background:transparent;border:1px solid var(--moss);color:var(--fg);border-radius:9999px;padding:8px 18px;cursor:pointer}
+.next button:hover{border-color:var(--fg)}
+.case{display:grid;gap:44px}
+.case>*,.chapter>*,.ops>*,.panel>*{min-width:0}
+.case h2,.chapter h2{font-weight:400;font-size:clamp(30px,4vw,38px);margin:0 0 12px;line-height:1.08;text-wrap:balance}
+.case p{margin:0 0 12px}
+.facts{display:grid;gap:10px;margin:8px 0 16px}
+.fact{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;border-bottom:1px solid var(--line);padding-bottom:10px;font-size:17px}
+.fact span:first-child{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--sage);padding-top:4px}
+.quotes{display:grid;gap:14px;margin-top:6px}
+.quote{border-left:2px solid var(--moss);padding:2px 0 2px 16px;display:grid;gap:2px}
+.quote .src{font-family:var(--mono);font-size:11px;color:var(--sage)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:16px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--sage);font-weight:400}
+td:first-child{white-space:nowrap}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 20px;min-width:0}
+.box h3{margin:0 0 8px;font-weight:500;font-size:20px}
+.box ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:16px}
+.member{display:grid;grid-template-columns:minmax(0,350px) minmax(0,1fr);gap:40px;align-items:start}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:9999px;padding:4px;gap:4px;margin-bottom:18px}
+.seg button{font-family:var(--serif);font-size:16px;border:0;border-radius:9999px;padding:6px 16px;background:transparent;color:var(--sage);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.phone{width:100%;max-width:350px;aspect-ratio:9/19.3;background:#0a0d0b;border:1px solid #2c332d;border-radius:50px;padding:10px;box-shadow:0 30px 80px rgba(0,0,0,.55);display:flex;flex-direction:column}
+.screen{position:relative;flex:1;min-height:0;border-radius:40px;background:linear-gradient(180deg,var(--app-top) 0%,var(--app-bot) 70%);overflow:hidden;display:flex;flex-direction:column}
+.island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:96px;height:28px;background:#000;border-radius:20px;z-index:3}
+.status{display:flex;justify-content:space-between;align-items:center;padding:14px 26px 0;height:44px;font-family:-apple-system,"SF Pro Text",system-ui,sans-serif;font-size:13px;font-weight:600;color:#fff;flex:none}
+.status .r{display:flex;gap:5px;align-items:center;font-size:10px}
+.status .bat{border:1px solid rgba(255,255,255,.8);border-radius:4px;padding:0 3px;font-size:9px;line-height:12px}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 0;color:var(--sage);flex:none}
+.topbar .ic{display:flex;gap:14px}
+.ico{width:15px;height:15px;display:inline-block;stroke:currentColor;fill:none;stroke-width:1.4;vertical-align:-2px}
+.app{flex:1;overflow-y:auto;padding:8px 16px 92px;display:flex;flex-direction:column;gap:10px;scrollbar-width:none}
+.app::-webkit-scrollbar{display:none}
+.xt{font-size:23px;line-height:1.12;text-align:center;margin:10px 6px 0;font-weight:400}
+.xm{text-align:center;font-size:13px;color:var(--sage);margin-top:2px}
+.cur{align-self:center;display:inline-flex;gap:6px;align-items:center;border:1px solid var(--card-line);background:rgba(0,0,0,.12);border-radius:9999px;padding:4px 12px;font-size:12px;color:var(--sage);margin-top:6px}
+.cur b{color:var(--fg);font-weight:400}
+.sec{font-size:17px;margin:12px 0 0}
+.day{display:flex;gap:10px;align-items:center;font-size:10px;letter-spacing:.08em;color:var(--sage);text-transform:uppercase;margin-top:2px}
+.day::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--sage)}
+.stop{background:var(--card);border:1px solid var(--card-line);border-radius:14px;margin-left:14px;overflow:hidden}
+.stop .h{padding:10px 12px 8px;display:grid}
+.stop .h small{font-size:11px;color:var(--sage)}
+.stop .h b{font-weight:400;font-size:17px;line-height:1.2}
+.stop .h em{font-style:normal;font-size:11px;color:var(--sage)}
+.stop .rows{margin:0 6px 6px;background:rgba(0,0,0,.14);border-radius:10px;border:1px solid var(--card-line)}
+.stop .rw{display:flex;align-items:center;gap:8px;padding:7px 10px;font-size:12px;border-top:1px solid var(--card-line)}
+.stop .rw:first-child{border-top:0}
+.stop .rw .st{margin-left:auto;color:var(--sage);font-size:11px;display:flex;gap:5px;align-items:center}
+.st.amber{color:var(--warn)}
+.av{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#7a3b3b,#c86c4a);flex:none}
+.blur{display:inline-flex;flex:none}
+.blur i{width:14px;height:14px;border-radius:50%;margin-left:-5px;filter:blur(1.3px);display:inline-block}
+.blur i:first-child{margin-left:0}
+.mute{color:var(--sage)}
+.survey{margin-left:14px;display:flex;justify-content:space-between;font-size:11px;color:var(--sage);background:var(--card);border:1px solid var(--card-line);border-radius:10px;padding:8px 12px}
+.bottom{position:absolute;left:0;right:0;bottom:0;padding:12px 14px 18px;display:grid;grid-template-columns:38px 1fr 1fr;gap:8px;background:linear-gradient(180deg,rgba(27,37,30,0) 0%,var(--app-bot) 35%);z-index:2}
+.bottom.one{grid-template-columns:1fr}
+.bottom button{font-family:var(--serif);font-style:italic;letter-spacing:.06em;font-size:13px;border-radius:9999px;cursor:pointer;height:38px}
+.b-x{background:rgba(255,255,223,.05);border:1px solid var(--card-line);color:var(--sage);font-style:normal!important}
+.b-inv{background:rgba(255,255,223,.05);border:1px solid var(--card-line);color:var(--fg)}
+.b-yes{background:var(--fg);border:0;color:#1b251e}
+.bottom button[disabled]{opacity:.5;cursor:default}
+.sheetwrap{position:absolute;inset:0;background:rgba(10,14,11,.55);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;flex-direction:column;justify-content:flex-end;z-index:2}
+.sheet{background:#1f2a22;border-top-left-radius:22px;border-top-right-radius:22px;padding:8px 14px 70px;display:grid;gap:8px;max-height:84%;overflow-y:auto;scrollbar-width:none}
+.grab{width:34px;height:4px;border-radius:4px;background:rgba(255,255,223,.25);justify-self:center;margin-bottom:4px}
+.sbox{border:1px solid var(--card-line);border-radius:14px;padding:12px;display:grid;gap:8px;background:rgba(255,255,223,.02)}
+.sbox h4{margin:0;font-weight:400;font-size:17px}
+.sin{background:rgba(0,0,0,.16);border:1px solid var(--card-line);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--sage);display:grid;gap:8px;line-height:1.4}
+.sin b{color:var(--fg);font-weight:400}
+.msgcenter{flex:1;display:flex;align-items:center;padding:0 28px;font-size:14px;line-height:1.45}
+.nsel{flex:1;display:grid;align-content:center;text-align:center;gap:6px;padding:40px 14px 0}
+.nsel b{font-weight:400;font-size:18px}
+.nsel span{font-size:14px;line-height:1.45;color:var(--fg);opacity:.85}
+.first{width:100%;text-align:left;font:inherit;cursor:pointer;margin-top:6px;border:1px solid rgba(230,196,126,.4);background:var(--card);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px;font-size:13px;line-height:1.35;color:var(--sage)}
+.first b{font-weight:400;font-size:14px;color:var(--fg);flex:1}
+.first span{color:var(--sage);font-size:16px}
+.first:hover{background:rgba(255,255,223,.07)}
+.ihead{display:flex;justify-content:space-between;align-items:center;padding:12px 18px 0;flex:none}
+.ihead span{font-style:italic;letter-spacing:.06em;font-size:17px}
+.ihead small{font-style:italic;color:var(--sage);font-size:12px;margin-left:6px}
+.icard{display:grid;gap:4px;text-align:center;width:100%;font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--card-line);border-radius:16px;padding:22px 14px 14px;cursor:pointer}
+.icard:hover{background:rgba(255,255,223,.07)}
+.icard>b{font-weight:400;font-size:19px;line-height:1.15}
+.icard .cur{justify-self:center;margin-top:8px}
+.icard .m{font-size:12px;color:var(--sage)}
+.icard .f{font-size:11px;color:var(--sage);margin-top:10px;display:flex;gap:5px;justify-content:center;align-items:center}
+.timeline{display:grid;gap:10px;min-width:0}
+.step{display:grid;grid-template-columns:100px minmax(0,1fr);gap:14px;text-align:left;width:100%;background:transparent;border:1px solid var(--line);border-radius:16px;padding:12px 14px;color:var(--fg);font:inherit;cursor:pointer}
+.step:hover{border-color:var(--moss)}
+.step[aria-current="true"]{background:var(--surface);border-color:var(--fg)}
+.step .when{font-family:var(--mono);font-size:12px;color:var(--sage);padding-top:4px}
+.step .what{font-size:17px;line-height:1.35}
+.step .what small{display:block;color:var(--sage);font-size:15px;margin-top:3px}
+.step .new{font-family:var(--mono);font-size:10px;color:var(--warn);letter-spacing:.06em;margin-left:6px}
+.verdict{border-radius:16px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);display:grid;gap:4px;font-size:17px}
+.verdict .mono{color:var(--sage)}
+.assume{font-size:15px;color:var(--sage);margin:4px 0 0}
+.ops{display:grid;gap:26px}
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:20px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px 20px;display:grid;gap:14px;min-width:0}
+.panel h3{margin:0;font-weight:500;font-size:20px}
+.panel .sub{margin:-8px 0 0;font-size:15px;color:var(--sage)}
+.field{display:grid;grid-template-columns:minmax(0,1fr) 100px;gap:12px;align-items:center;font-size:16px}
+.field label small{display:block;color:var(--sage);font-size:13px;line-height:1.3}
+.field input{font-family:var(--mono);font-size:15px;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;width:100%;text-align:right;font-variant-numeric:tabular-nums}
+.outs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.out{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:2px}
+.out .v{font-size:32px;line-height:1.05;font-variant-numeric:tabular-nums}
+.out .d{font-size:14px;color:var(--sage);line-height:1.3}
+.formula{font-family:var(--mono);font-size:11px;color:var(--sage);line-height:1.6}
+.gaps{display:grid;gap:12px}
+.acts{display:flex;flex-wrap:wrap;gap:6px}
+.act{font-family:var(--serif);font-size:14px;border-radius:9999px;border:1px solid var(--moss);background:transparent;color:var(--fg);padding:5px 12px;cursor:pointer}
+.act[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.06em;border-radius:9999px;padding:2px 8px;width:fit-content}
+.tag.bad{background:rgba(227,154,128,.14);color:var(--bad)}
+.tag.good{background:rgba(184,207,143,.15);color:var(--good)}
+.queued{font-family:var(--mono);font-size:11px;color:var(--sage)}
+.chapter{display:grid;gap:40px}
+ol.plan{margin:0;padding-left:22px;display:grid;gap:8px}
+footer{margin-top:56px;border-top:1px solid var(--line);padding-top:18px;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (max-width:820px){
+  .member,.calc,.two{grid-template-columns:minmax(0,1fr)}
+  .phone{margin-inline:auto}
+}
+@media (max-width:460px){
+  .step{grid-template-columns:minmax(0,1fr);gap:4px}
+  .outs{grid-template-columns:minmax(0,1fr)}
+  .field{grid-template-columns:minmax(0,1fr) 90px}
+  .fact{grid-template-columns:minmax(0,1fr);gap:2px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .app>*,.sheet{animation:rise .3s ease both}
+  @keyframes rise{from{transform:translateY(6px);opacity:.5}to{transform:none;opacity:1}}
+}
+.match{border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:8px;background:var(--bg)}
+.match .route{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:15px}
+.match .route .arrow{color:var(--sage)}
+.match p{margin:0;font-size:15px;color:var(--sage);line-height:1.35}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+td.bad{color:var(--bad)}
+tr.tot td{color:var(--sage);border-bottom:0}
+.room{justify-self:center;font-size:11px;color:var(--good);border:1px solid rgba(184,207,143,.45);border-radius:9999px;padding:1px 10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="concept">
+    <span><b>concept prototype</b> by mohit malviya, nov 2026</span>
+    <span>not an official 222 product · no internal 222 data used</span>
+  </div>
+
+  <header class="hero">
+    <span class="eyebrow">for keyan, danial &amp; arman</span>
+    <h1>where you <em>fit.</em></h1>
+    <p class="lede">I've been on 222 for almost a year, and I've been waitlisted too. A "not selected" is usually about the mix. One pool has too many people like me, while a table somewhere else that week can't form because it's missing someone like me. <strong>Here's how I'd connect the two, and turn the no into a guaranteed spot.</strong></p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Chapters">
+    <button class="pill" role="tab" id="tab-problem" aria-selected="true" data-view="problem"><span class="n">01</span>the problem</button>
+    <button class="pill" role="tab" id="tab-member" aria-selected="false" data-view="member"><span class="n">02</span>member flow</button>
+    <button class="pill" role="tab" id="tab-ops" aria-selected="false" data-view="ops"><span class="n">03</span>ops view</button>
+    <button class="pill" role="tab" id="tab-test" aria-selected="false" data-view="test"><span class="n">04</span>how I'd test it</button>
+  </nav>
+
+  <section id="view-problem" class="case" role="tabpanel" aria-labelledby="tab-problem">
+    <div>
+      <h2>how it works today</h2>
+      <div class="facts">
+        <div class="fact"><span>saying yes</span><span>You join a selection pool for that experience.</span></div>
+        <div class="fact"><span>matching</span><span>222 builds tables of about six from that pool. If no good table includes you, you're not selected.</span></div>
+        <div class="fact"><span>when you hear</span><span>About a day before. For a sunday noon brunch, the app said "by 1:22pm this saturday."</span></div>
+        <div class="fact"><span>not selected</span><span>You get a refund if it was paid. Nothing else.</span></div>
+      </div>
+      <p>From the outside, a decline isn't really about me. It's about the mix. Sometimes a pool has more people like me than its tables can use. Other times a table is one person short, and everyone waiting on it gets turned away. The app's own wording points at the second one: "we couldn't find compatible members."</p>
+    </div>
+
+    <div>
+      <h2>what members say</h2>
+      <div class="quotes">
+        <div class="quote"><span>"I kept requesting invitations to events and kept getting declined due to &ldquo;high demand.&rdquo;"</span><span class="src"><a href="https://apps.apple.com/us/app/222-find-your-people/id6450612690?see-all=reviews">app store</a> · racer2026 · oct 25, 2025</span></div>
+        <div class="quote"><span>"I have been on the waitlist for 222 for months without receiving a single invitation"</span><span class="src"><a href="https://apps.apple.com/us/app/222-find-your-people/id6450612690?see-all=reviews">app store</a> · Agelin5555555 · jun 11, 2026</span></div>
+        <div class="quote"><span>"You can't schedule your day around these, because you don't find out until last minute."</span><span class="src"><a href="https://www.trustpilot.com/reviews/6a1203b1419cf697b359d02e">trustpilot</a> · Rehan Sattar · may 23, 2026</span></div>
+        <div class="quote"><span>"...being added to a "waitlist" and told last minute they don't have space, like clockwork."</span><span class="src"><a href="https://www.trustpilot.com/reviews/6a9342122af6e376f1d83b82">trustpilot</a> · J "StudioLogic" · aug 29, 2026</span></div>
+      </div>
+      <p class="muted" style="font-size:15px;margin-top:14px">Their exact words. The App Store doesn't let you link to a single review, so those open the reviews page. Search the name to find them.</p>
+    </div>
+
+    <div>
+      <h2>why it matters to the business</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>what it costs</th><th>why</th></tr></thead>
+        <tbody>
+          <tr><td>tables that don't form</td><td>If a table is one person short, the five people waiting on it are turned away too. Venues pay 222 $3 to $5 per check-in, so that's six check-ins gone.</td></tr>
+          <tr><td>engagement</td><td>Get declined twice in a row and saying yes starts to feel pointless.</td></tr>
+          <tr><td>supply planning</td><td>Every decline says which mix was too full or which one was missing. Put together, that's a map of who to send where.</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="next"><button data-goto="member">see the member flow</button></div>
+  </section>
+
+  <section id="view-member" class="member" role="tabpanel" aria-labelledby="tab-member" hidden>
+    <div>
+      <div class="seg" role="group" aria-label="Compare flows">
+        <button id="mode-today" aria-pressed="true">today</button>
+        <button id="mode-new" aria-pressed="false">proposed</button>
+      </div>
+      <div class="phone"><div class="screen" id="screen"></div></div>
+    </div>
+    <div class="timeline">
+      <h2 id="tl-title" style="font-weight:400;font-size:clamp(28px,3.6vw,34px);margin:0 0 4px;line-height:1.1">today</h2>
+      <div id="steps" class="timeline"></div>
+      <div class="verdict" id="verdict"></div>
+      <p class="assume">I rebuilt these screens from the current app. Tap through the phone, or click a step.</p>
+      <div class="next" style="margin-top:6px"><button data-goto="ops">see the ops view</button></div>
+    </div>
+  </section>
+
+  <section id="view-ops" class="ops" role="tabpanel" aria-labelledby="tab-ops" hidden>
+    <div>
+      <span class="eyebrow">ops view</span>
+      <h2 style="font-weight:400;font-size:clamp(30px,4vw,38px);margin:4px 0 6px;line-height:1.08">where the mix is off this week</h2>
+      <p class="muted" style="margin:0">Some pools turn people away because they're too full of one mix. Others turn people away because a table is one person short. The first group can fix the second. These are sample numbers, so swap in real ones.</p>
+    </div>
+
+    <div class="panel">
+      <h3>this week's pools</h3>
+      <p class="sub">made-up numbers: 2,000 yeses, 500 not picked, 10 tables one person short</p>
+      <div class="tbl"><table id="pools"></table></div>
+    </div>
+
+    <div class="panel">
+      <h3>matches to make</h3>
+      <p class="sub">people turned away from one pool, next to the tables that need them</p>
+      <div class="gaps" id="gaps"></div>
+    </div>
+
+    <div class="calc">
+      <div class="panel">
+        <h3>your numbers</h3>
+        <p class="sub">placeholders, edit any field</p>
+        <div class="field"><label for="in-req">yeses per week<small>members who joined a selection pool</small></label><input id="in-req" type="number" min="0" step="50" value="2000"></div>
+        <div class="field"><label for="in-dec">not selected (%)<small>share of yeses that end without a seat</small></label><input id="in-dec" type="number" min="0" max="100" step="1" value="25"></div>
+        <div class="field"><label for="in-short">tables one short<small>per week, missing one person to form</small></label><input id="in-short" type="number" min="0" step="1" value="10"></div>
+        <div class="field"><label for="in-done">completed (%)<small>of those, how many fill because someone takes a guaranteed spot</small></label><input id="in-done" type="number" min="0" max="100" step="5" value="60"></div>
+        <div class="field"><label for="in-fee">fee per check-in ($)<small>partner page says $3 to $5</small></label><input id="in-fee" type="number" min="0" step="0.5" value="4"></div>
+      </div>
+      <div class="panel">
+        <h3>what that adds up to</h3>
+        <div class="outs">
+          <div class="out"><span class="v" id="o-dec">500</span><span class="d">members not selected each week</span></div>
+          <div class="out"><span class="v" id="o-tab">6</span><span class="d">tables that now form each week</span></div>
+          <div class="out"><span class="v" id="o-pick">36</span><span class="d">people picked instead of turned away</span></div>
+          <div class="out"><span class="v" id="o-yr">$7.5k</span><span class="d">new partner revenue per year</span></div>
+        </div>
+        <div class="formula">
+          not selected = yeses × not-selected %<br>
+          tables that form = tables one short × completed %<br>
+          people picked = tables that form × 6<br>
+          per year = people picked × fee × 52
+        </div>
+        <p class="sub" style="margin:0">Each table that forms picks the person you sent plus the five waiting on them. This counts one check-in each, so it's the floor. The bigger win is 36 fewer people a week hearing no.</p>
+      </div>
+    </div>
+    <div class="next"><button data-goto="test">see how I'd test it</button></div>
+  </section>
+
+  <section id="view-test" class="chapter" role="tabpanel" aria-labelledby="tab-test" hidden>
+    <div>
+      <h2>a two-week test in new york</h2>
+      <ol class="plan">
+        <li>Split members who end up not selected into two even groups. One keeps today's flow.</li>
+        <li>The other gets a guaranteed spot, at most once a month, in a pool that's short of people like them. NYC ops gets the matches list every week.</li>
+        <li>At day 14, compare the two groups and decide together whether to roll it out.</li>
+      </ol>
+    </div>
+
+    <div>
+      <h2>what I'd measure</h2>
+      <div class="tbl"><table>
+        <thead><tr><th>metric</th><th>how it's calculated</th><th>data source</th></tr></thead>
+        <tbody>
+          <tr><td>guaranteed spots taken</td><td>guaranteed spots accepted ÷ guaranteed spots offered</td><td>new app event</td></tr>
+          <tr><td>twice in a row</td><td>members not selected on their next yes too ÷ not-selected members</td><td>selection pool</td></tr>
+          <tr><td>tables completed</td><td>tables one person short that formed after someone was sent there ÷ tables one person short</td><td>selection pool</td></tr>
+          <tr><td>said yes again</td><td>not-selected members who join another pool within 30 days ÷ not-selected members</td><td>selection pool</td></tr>
+          <tr><td>guardrail: no-shows</td><td>guaranteed spots accepted with no check-in ÷ guaranteed spots accepted</td><td>check-in</td></tr>
+          <tr><td>guardrail: rating</td><td>follow-up survey score at tables with a member who was sent there vs. without</td><td>follow-up survey</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="two">
+      <div class="box">
+        <h3>what I'd build first</h3>
+        <ul>
+          <li>Week 1: the matches list for ops, from pool data you already have. Members see no change.</li>
+          <li>Week 2: guaranteed spots on the not-selected screen, at most once a month per person.</li>
+          <li>Later: point people to pools that need them before they say yes, so fewer declines happen at all.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>what I'd ask you</h3>
+        <ul>
+          <li>How many declines come from tables one person short, and how many from pools that were too full?</li>
+          <li>Could the matcher treat one person as must-place in a pool that's short of their profile?</li>
+          <li>Do invites already go out based on which pools are short?</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="mono muted">mohit malviya · AI PM · cornell mba · 222 member</span>
+    <span class="mono muted">built from public info and my own use of the app</span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const views=['problem','member','ops','test'];
+  const tabs=[...document.querySelectorAll('[role="tab"]')];
+  function show(v,scroll){
+    tabs.forEach(t=>t.setAttribute('aria-selected',String(t.dataset.view===v)));
+    views.forEach(x=>{document.getElementById('view-'+x).hidden=(x!==v)});
+    if(scroll)document.querySelector('nav.tabs').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.view)));
+  document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.goto,true)));
+  const h=(location.hash||'').slice(1);
+  if(views.includes(h))show(h);
+
+  const svg={
+    down:'<svg class="ico" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4"/></svg>',
+    chat:'<svg class="ico" viewBox="0 0 16 16"><path d="M3 12.5V4.5a1.5 1.5 0 011.5-1.5h7A1.5 1.5 0 0113 4.5v5A1.5 1.5 0 0111.5 11H6z"/></svg>',
+    cal:'<svg class="ico" viewBox="0 0 16 16"><rect x="2.5" y="3.5" width="11" height="10" rx="1.5"/><path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"/></svg>',
+    share:'<svg class="ico" viewBox="0 0 16 16"><path d="M8 2v8M5 5l3-3 3 3M3.5 9v4h9V9"/></svg>',
+    info:'<svg class="ico" viewBox="0 0 16 16" style="width:11px;height:11px"><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5v.5"/></svg>',
+    person:'<svg class="ico" viewBox="0 0 16 16" style="width:11px;height:11px"><circle cx="8" cy="5.5" r="2.5"/><path d="M3.5 13.5c.8-2.5 2.5-3.5 4.5-3.5s3.7 1 4.5 3.5"/></svg>',
+    clock:'<svg class="ico" viewBox="0 0 16 16" style="width:11px;height:11px"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>'
+  };
+  const status='<div class="island"></div><div class="status"><span>9:41</span><span class="r">●●●● ◠ <span class="bat">80</span></span></div>';
+  const blurs=c=>'<span class="blur">'+c.map(x=>'<i style="background:'+x+'"></i>').join('')+'</span>';
+  const g1=blurs(['#c9a7a0','#8d6a6a','#e2d2c4']),g2=blurs(['#7d8a73','#b9a68a']),g3=blurs(['#a98b7a','#5a4a44']);
+  const top=()=>'<div class="topbar"><span>'+svg.down+'</span><span class="ic">'+svg.chat+svg.cal+svg.share+'</span></div>';
+  const head=x=>'<h3 class="xt">'+x.title+'</h3><div class="xm">'+x.meta+'</div><span class="cur">'+svg.person+' curated by <b>you</b> ›</span>';
+  function itinerary(x,st){
+    return '<div class="sec">itinerary</div><div class="day">'+x.day+'</div>'+
+      '<div class="stop"><div class="h"><small>'+x.t1+'</small><b>'+x.s1+'</b></div><div class="rows">'+
+        '<div class="rw"><span class="av"></span>you<span class="st">'+st+' '+svg.info+'</span></div>'+
+        '<div class="rw">'+g1+'<span><span class="mute">your</span> 5 close matches</span></div></div></div>'+
+      '<div class="stop"><div class="h"><small>'+x.t2+'</small><b>'+x.s2+'</b><em>'+x.s2sub+'</em></div><div class="rows">'+
+        '<div class="rw">'+g2+'<span><span class="mute">your</span> '+x.grp+'</span></div>'+
+        '<div class="rw">'+g3+'<span>'+x.crowd+' <span class="mute">other</span> 222 <span class="mute">members</span></span></div></div></div>'+
+      '<div class="survey"><span>'+x.survey+'</span><span>follow-up survey</span></div>';
+  }
+  const bottom=(yes,x)=>'<div class="bottom"><button class="b-x"'+(x!=null?' data-go="'+x+'"':' disabled')+'>✕</button><button class="b-inv" disabled>INVITE</button><button class="b-yes" data-go="'+yes+'">YES</button></div>';
+  const bottomOne=(label,go)=>'<div class="bottom one"><button class="b-yes" data-go="'+go+'">'+label+'</button></div>';
+
+  const sun={title:'brunch &amp; video<br>game lounge',meta:'this sunday · 12:00pm · chinatown',day:'sun, nov 8',t1:'12:00pm',s1:'brunch',t2:'2:00pm',s2:'video game lounge',s2sub:'$15 for four hours of play, paid at the door',grp:'brunch table',crowd:'32+',survey:'10:00pm'};
+  const nxt={title:'grand central urban-immersive scavenger hunt &amp; drinks',meta:'sat, nov 14 · 1:45pm · midtown',day:'sat, nov 14',t1:'1:45pm',s1:'scavenger hunt',t2:'4:00pm',s2:'drinks',s2sub:'at a nearby cocktail bar',grp:'scavenger hunt group',crowd:'40+',survey:'11:45pm'};
+  const sheet='<div class="sheetwrap"><div class="sheet"><span class="grab"></span><div class="sbox"><h4>selection terms</h4><div class="sin"><span>proceeding will <b>add you to the selection pool</b> for this experience.</span><span>you\'ll be notified if you\'re selected from the pool by <b>1:22pm this saturday</b>.</span></div></div><div class="sbox"><h4>cancellation policy</h4><div class="sin"><span><b>cancel anytime before 1:22pm this saturday</b><br>no additional charges or fees</span><span><b>cancel after 1:22pm this saturday</b><br>automatic $12.22 cancellation charge</span></div></div></div></div>'+bottomOne('AGREE AND CONFIRM',2);
+  const waiting=status+'<div class="msgcenter">you are now confirmed on the waitlist. you\'ll find out if you\'re selected by 1:22pm this saturday.</div>';
+  const nsel='<div class="nsel"><b>not selected</b><span>we couldn\'t find compatible members for you at this experience. if you paid, you\'ll be refunded automatically.</span></div>';
+  const card=o=>'<button class="icard" data-go="5"><span class="room">spot guaranteed for you</span><b>'+o.title+'</b><span class="m">'+o.meta+'</span><span class="cur">'+svg.person+' curated by <b>you</b> ›</span><span class="f">'+svg.clock+' say yes by wed, nov 11</span></button>';
+  let mode='today',idx=0;
+
+  const screens={
+    today:[
+      ()=>status+top()+'<div class="app">'+head(sun)+itinerary(sun,'pending')+'</div>'+bottom(1),
+      ()=>status+top()+'<div class="app">'+head(sun)+itinerary(sun,'pending')+'</div>'+sheet,
+      ()=>waiting,
+      ()=>status+top()+'<div class="app">'+head(sun)+nsel+'</div>'
+    ],
+    proposed:[
+      ()=>status+top()+'<div class="app">'+head(sun)+itinerary(sun,'pending')+'</div>'+bottom(1),
+      ()=>status+top()+'<div class="app">'+head(sun)+itinerary(sun,'pending')+'</div>'+sheet,
+      ()=>waiting,
+      ()=>status+top()+'<div class="app">'+head(sun)+nsel.replace('</span></div>','</span><button class="first" data-go="4" style="margin-top:14px"><b>a spot is guaranteed for you at the scavenger hunt on nov 14<br><span style="font-size:12px;color:var(--sage)">say yes by wed, nov 11</span></b><span>›</span></button></div>')+'</div>',
+      ()=>status+'<div class="ihead"><span>INVITES<small>3</small></span></div><div class="app" style="justify-content:center;padding-bottom:40px">'+card(nxt)+'</div>',
+      ()=>status+top()+'<div class="app">'+head(nxt)+itinerary(nxt,'<span style="color:var(--good)">guaranteed</span>')+'</div>'+bottom(6,4),
+      ()=>status+'<div class="msgcenter">you\'re in. your spot at the scavenger hunt on saturday, november 14 is confirmed. the usual cancellation policy applies.</div>'
+    ]
+  };
+
+  const flows={
+    today:{title:'today',steps:[
+      {when:'mon',what:'You tap yes on sunday\'s brunch & video game lounge.',sub:'Brunch with 5 close matches, then 32+ members at the lounge.'},
+      {when:'mon',what:'You agree to the selection terms.',sub:'You\'ll hear by 1:22pm saturday. Cancel after that and it costs $12.22.'},
+      {when:'mon to sat',what:'You\'re on the waitlist.',sub:'No idea what your odds are, so sunday stays on hold.'},
+      {when:'sat 1:22pm',what:'Not selected.',sub:'About a day before. A refund if you paid, and nothing else.'}
+    ],verdict:'<span class="mono">result</span><span>You stay home. Next week you say yes to the same kind of pool and hit the same no.</span>'},
+    proposed:{title:'proposed',steps:[
+      {when:'mon',what:'You tap yes, same as today.',sub:'Nothing changes before the decision.'},
+      {when:'mon',what:'Same selection terms.',sub:'Same pool, same timing, same cancellation rules.'},
+      {when:'mon to sat',what:'You\'re on the waitlist.',sub:'Same as today.'},
+      {when:'sat 1:22pm',what:'Not selected, plus a guaranteed spot somewhere else.',sub:'"A spot is guaranteed for you at the scavenger hunt on nov 14. Say yes by wed."',tag:1},
+      {when:'sat',what:'That invite says "spot guaranteed for you."',sub:'Same invites screen, with the deadline to say yes.',tag:1},
+      {when:'sat',what:'You open it and tap yes.',sub:'Same invite screen. Your row says guaranteed instead of pending.',tag:1},
+      {when:'sat',what:'You\'re in. No waitlist this time.',sub:'That pool is short of people like you, so the matcher places you and builds the tables around you.'}
+    ],verdict:'<span class="mono">result</span><span>The no turns into a yes a minute later, and a table that was one person short gets to happen.</span>'}
+  };
+
+  const scr=document.getElementById('screen'),stepsEl=document.getElementById('steps'),verdict=document.getElementById('verdict'),title=document.getElementById('tl-title');
+  const mt=document.getElementById('mode-today'),mn=document.getElementById('mode-new');
+  function render(){
+    const f=flows[mode];
+    title.textContent=f.title;
+    stepsEl.innerHTML=f.steps.map((s,i)=>'<button class="step" data-i="'+i+'" aria-current="'+(i===idx)+'"><span class="when">'+s.when+'</span><span class="what">'+s.what+(s.tag?'<span class="new">NEW</span>':'')+'<small>'+s.sub+'</small></span></button>').join('');
+    verdict.innerHTML=f.verdict;
+    scr.innerHTML=screens[mode][idx]();
+    mt.setAttribute('aria-pressed',String(mode==='today'));
+    mn.setAttribute('aria-pressed',String(mode==='proposed'));
+  }
+  stepsEl.addEventListener('click',e=>{const b=e.target.closest('.step');if(!b)return;idx=+b.dataset.i;render()});
+  scr.addEventListener('click',e=>{
+    const g=e.target.closest('[data-go]');if(g&&!g.disabled){idx=+g.dataset.go;render();return}
+    if(idx===2&&!e.target.closest('button')){idx=3;render()}
+  });
+  mt.addEventListener('click',()=>{mode='today';idx=0;render()});
+  mn.addEventListener('click',()=>{mode='proposed';idx=0;render()});
+  render();
+
+  const $=id=>document.getElementById(id);
+  const pools=[
+    ['mon','midtown',180,0,''],['tue','west village',220,20,'3 tables one person short'],['wed','chelsea',240,0,''],
+    ['thu','soho',480,180,'too many aged 30 to 35'],['fri','east village',420,120,'too full overall'],
+    ['sat','midtown',340,140,'too many under 27'],['sun','williamsburg',120,40,'7 tables one person short']
+  ];
+  $('pools').innerHTML='<thead><tr><th>day</th><th>area</th><th>yeses</th><th>picked</th><th>not picked</th><th>why</th></tr></thead><tbody>'+
+    pools.map(p=>'<tr><td>'+p[0]+'</td><td>'+p[1]+'</td><td class="num">'+p[2]+'</td><td class="num">'+(p[2]-p[3])+'</td><td class="num'+(p[3]?' bad':'')+'">'+p[3]+'</td><td>'+(p[4]||'<span class="muted">none</span>')+'</td></tr>').join('')+
+    '<tr class="tot"><td>week</td><td></td><td class="num">2,000</td><td class="num">1,500</td><td class="num">500</td><td></td></tr></tbody>';
+
+  const matches=[
+    {from:'thu · soho · too many aged 30 to 35',to:'sun · williamsburg · 7 tables one short',body:'Each sunday table is waiting on one person aged 30 to 35. Guarantee 7 of thursday\'s declines a spot, and 42 people get picked instead of turned away.',acts:['guarantee them a spot on sunday']},
+    {from:'tue · west village · 3 tables one short',to:'nobody turned away earlier fits',body:'No one declined before tuesday matches, so this needs people from outside the pool.',acts:['invite past members who fit']},
+    {from:'fri and sat · too full',to:'no table short of these mixes',body:'260 people and nowhere to send them this week. This needs more tables, not routing.',acts:['add a table at a partner','open a second night']}
+  ];
+  const hint='tap an action to queue it, tap again to undo';
+  $('gaps').innerHTML=matches.map(m=>'<div class="match"><div class="route"><span class="tag bad">'+m.from+'</span><span class="arrow">→</span><span class="tag good">'+m.to+'</span></div><p>'+m.body+'</p><div class="acts">'+m.acts.map(a=>'<button class="act" aria-pressed="false">'+a+'</button>').join('')+'</div><span class="queued">'+hint+'</span></div>').join('');
+  $('gaps').addEventListener('click',e=>{
+    const b=e.target.closest('.act');if(!b)return;
+    b.setAttribute('aria-pressed',String(b.getAttribute('aria-pressed')!=='true'));
+    const c=b.closest('.match'),n=c.querySelectorAll('.act[aria-pressed="true"]').length;
+    c.querySelector('.queued').textContent=n?n+' queued · tap again to undo':hint;
+  });
+
+  function num(id,mx){let v=parseFloat($(id).value);if(!isFinite(v)||v<0)v=0;if(mx!=null&&v>mx)v=mx;return v}
+  function money(v){return v>=1000?'$'+(v/1000).toFixed(v>=100000?0:1)+'k':'$'+Math.round(v).toLocaleString()}
+  function calc(){
+    const req=num('in-req'),dec=num('in-dec',100)/100,sh=num('in-short'),done=num('in-done',100)/100,fee=num('in-fee');
+    const d=Math.round(req*dec),t=Math.round(sh*done),p=t*6;
+    $('o-dec').textContent=d.toLocaleString();
+    $('o-tab').textContent=t.toLocaleString();
+    $('o-pick').textContent=p.toLocaleString();
+    $('o-yr').textContent=money(p*fee*52);
+  }
+  ['in-req','in-dec','in-short','in-done','in-fee'].forEach(id=>$(id).addEventListener('input',calc));
+  calc();
+})();
+</script>
+</body>
+</html>
